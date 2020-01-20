@@ -4,6 +4,11 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.alvarodf.abysswalker.AbysswalkerGame;
 
+/**
+ *
+ * @author Alvaro de Francisco
+ * @since January 20th, 2020
+ */
 public class DesktopLauncher {
 
 	public static void main (String[] arg) {

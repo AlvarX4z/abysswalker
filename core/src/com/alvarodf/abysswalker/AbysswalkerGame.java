@@ -6,6 +6,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+/**
+ *
+ * @author Alvaro de Francisco
+ * @since January 20th, 2020
+ */
 public class AbysswalkerGame extends ApplicationAdapter {
 
 	SpriteBatch batch;
