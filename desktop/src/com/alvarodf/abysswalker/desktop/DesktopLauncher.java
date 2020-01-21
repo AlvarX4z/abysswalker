@@ -16,6 +16,10 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		new LwjglApplication(new AbysswalkerGame(), config);
 
+		config.title = "Abysswalker";
+		config.width = 800;
+		config.height = 600;
+
 	}
 
 }
