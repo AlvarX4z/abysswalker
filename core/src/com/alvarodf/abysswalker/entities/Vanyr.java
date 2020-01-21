@@ -1,5 +1,7 @@
 package com.alvarodf.abysswalker.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
@@ -45,4 +47,17 @@ public final class Vanyr extends Entity {
 
     }
 
+    @Override
+    public void act(float dt) {
+        super.act(dt);
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
+            this.moveBy(-1,0);
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+            this.moveBy(1,0);
+        if (Gdx.input.isKeyPressed(Input.Keys.UP))
+            this.moveBy(0,1);
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
+            this.moveBy(0,-1);
+
+    }
 }

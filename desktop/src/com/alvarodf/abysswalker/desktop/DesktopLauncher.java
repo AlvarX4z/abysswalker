@@ -9,7 +9,7 @@ import com.alvarodf.abysswalker.AbysswalkerGame;
  * @author Alvaro de Francisco
  * @since January 20th, 2020
  */
-public class DesktopLauncher {
+public final class DesktopLauncher {
 
 	public static void main (String[] arg) {
 
