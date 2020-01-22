@@ -43,13 +43,11 @@ public class PlayScreen implements Screen {
         hud = new Hud(game.batch);
 
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("android/assets/prueba1.tmx"); // Stating map's path
-
-        Gdx.app.log("Mapa Cargado", (map != null) + ""); // Debugging purposes
-
+        map = mapLoader.load("android/assets/maps/map_forest.tmx"); // Stating map's path
         mapRenderer = new OrthogonalTiledMapRenderer(map);
 
         camera.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+
     }
 
     /**
@@ -69,10 +67,11 @@ public class PlayScreen implements Screen {
 
         update(delta);
 
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         mapRenderer.render();
+
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
 
@@ -120,14 +119,9 @@ public class PlayScreen implements Screen {
      * @param dt Delta Time
      * @since January 21st, 2020
      */
-    public void handleInput(float dt) {
+    private void handleInput(float dt) {
 
-        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
-
-            Gdx.app.log("Tecla Y", Gdx.input.isKeyJustPressed(Input.Keys.Y) + "");
-            camera.position.x += 100 * dt;
-
-        }
+        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.Y)) { camera.position.x += 100 * dt; }
 
     }
 
@@ -136,7 +130,7 @@ public class PlayScreen implements Screen {
      * @param dt Delta Time
      * @since January 21st, 2020
      */
-    public void update(float dt) {
+    private void update(float dt) {
 
         handleInput(dt);
         camera.update();

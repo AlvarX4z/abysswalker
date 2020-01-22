@@ -17,8 +17,11 @@ public final class DesktopLauncher {
 		new LwjglApplication(new AbysswalkerGame(), config);
 
 		config.title = "Abysswalker";
+		config.foregroundFPS = 60;
+		// config.addIcon(); // TODO PENDIENTE
 		config.width = 800;
 		config.height = 600;
+
 
 	}
 
