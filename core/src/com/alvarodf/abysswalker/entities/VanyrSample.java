@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
  * @author Alvaro de Francisco
  * @since January 21st, 2020
  */
-public final class Vanyr extends Entity {
+public final class VanyrSample extends Entity {
 
     private int level;
     private int xp;
@@ -21,7 +21,7 @@ public final class Vanyr extends Entity {
     /**
      * @since January 21st, 2020
      */
-    public Vanyr() { super(); this.hp = 50; }
+    public VanyrSample() { super(); this.hp = 50; }
 
     /**
      * @since January 21st, 2020

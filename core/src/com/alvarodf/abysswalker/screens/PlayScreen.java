@@ -2,14 +2,25 @@ package com.alvarodf.abysswalker.screens;
 
 import com.alvarodf.abysswalker.AbysswalkerGame;
 import com.alvarodf.abysswalker.scenes.Hud;
+import com.alvarodf.abysswalker.sprites.Vanyr;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -20,14 +31,20 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  */
 public class PlayScreen implements Screen {
 
-    private AbysswalkerGame game; // The game
-    private OrthographicCamera camera; // The orthographic camera
+    private AbysswalkerGame game; // The game itself
+    private OrthographicCamera camera; // The orthographic camera which follows Vanyr
     private Viewport gamePort; // The game's viewport
     private Hud hud; // The game's HUD
+    private Vanyr vanyr; // The player's character
 
     private TmxMapLoader mapLoader; // The TiledMap Loader (.tmx)
     private TiledMap map; // The TiledMap itself
     private OrthogonalTiledMapRenderer mapRenderer; // The TiledMap rendered in an orthogonal basis
+
+    // ----------------------- BoX2D Variables -----------------------
+
+    private World world;
+    private Box2DDebugRenderer debugRenderer;
 
     /**
      * PlayScreen's Constructor.
@@ -39,14 +56,42 @@ public class PlayScreen implements Screen {
         this.game = game;
 
         camera = new OrthographicCamera();
-        gamePort = new FitViewport(AbysswalkerGame.VIEWPORT_WIDTH, AbysswalkerGame.VIEWPORT_HEIGHT, camera); // Probar con Stretch, Screen, Scaling, Fit VIEWPORT
+        gamePort = new FitViewport(AbysswalkerGame.VIEWPORT_WIDTH, AbysswalkerGame.VIEWPORT_HEIGHT, camera); //
         hud = new Hud(game.batch);
 
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("android/assets/maps/map_forest.tmx"); // Stating map's path
         mapRenderer = new OrthogonalTiledMapRenderer(map);
 
-        camera.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+        camera.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); // Sets the camera at the start of the level
+
+        world = new World(new Vector2(0, -50), true); // Physics for gravity and sleeping objects
+
+        debugRenderer = new Box2DDebugRenderer();
+
+        vanyr = new Vanyr(world);
+
+        BodyDef bodyDef = new BodyDef();
+        PolygonShape shape = new PolygonShape();
+        FixtureDef fixtureDef = new FixtureDef();
+        Body body;
+
+        for (MapObject object : map.getLayers().get("forest_ground").getObjects().getByType(RectangleMapObject.class)) { // Creates body for ground
+
+            Rectangle rect = ((RectangleMapObject)object).getRectangle();
+
+            bodyDef.type = BodyDef.BodyType.StaticBody;
+            bodyDef.position.set(0, 0);
+
+            body = world.createBody(bodyDef);
+
+            shape.setAsBox(rect.getWidth(), rect.getHeight() / 10);
+
+            fixtureDef.shape = shape;
+
+            body.createFixture(fixtureDef);
+
+        }
 
     }
 
@@ -58,6 +103,42 @@ public class PlayScreen implements Screen {
     public void show() { }
 
     /**
+     *
+     * @param dt Delta Time
+     * @since January 21st, 2020
+     */
+    private void handleInput(float dt) {
+
+        if (camera.position.x >= 0 && camera.position.x <= ((int)map.getProperties().get("width") * 16 - (int)map.getProperties().get("width") / 2)) { // PENSAR RESTA
+
+            if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.Y)) { camera.position.x += 1000 * dt; }
+            if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.T)) { camera.position.x -= 1000 * dt; }
+
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+
+
+
+        }
+
+    }
+
+    /**
+     *
+     * @param dt Delta Time
+     * @since January 21st, 2020
+     */
+    private void update(float dt) {
+
+        handleInput(dt);
+        world.step(1 / 60f, 6, 2);
+        camera.update();
+        mapRenderer.setView(camera);
+
+    }
+
+    /**
      * Mandatory function from LibGDX when rendering elements.
      * @param delta Delta Time
      * @since January 21st, 2020
@@ -67,12 +148,13 @@ public class PlayScreen implements Screen {
 
         update(delta);
 
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1); // Clears the game using a black color
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         mapRenderer.render();
+        debugRenderer.render(world, camera.combined);
 
-        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined); // Sets the batch to draw what the HUD camera sees
         hud.stage.draw();
 
     }
@@ -113,29 +195,5 @@ public class PlayScreen implements Screen {
      */
     @Override
     public void dispose() { }
-
-    /**
-     *
-     * @param dt Delta Time
-     * @since January 21st, 2020
-     */
-    private void handleInput(float dt) {
-
-        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.Y)) { camera.position.x += 100 * dt; }
-
-    }
-
-    /**
-     *
-     * @param dt Delta Time
-     * @since January 21st, 2020
-     */
-    private void update(float dt) {
-
-        handleInput(dt);
-        camera.update();
-        mapRenderer.setView(camera);
-
-    }
 
 }

@@ -22,11 +22,11 @@ public class Hud {
 
     // MIRAR PARA COGERLOS DESDE VANYR
 
-    private Integer hp; // Vanyr's Hit Points (Life)
-    private Integer damage; // Vanyr's Damage
-    private Integer armor; // Vanyr's Armor (Defence)
-    private Integer exp; // Vanyr's Experience Points (XP)
-    private Integer level; // Vanyr's current Level
+    private Integer hp; // VanyrSample's Hit Points (Life)
+    private Integer damage; // VanyrSample's Damage
+    private Integer armor; // VanyrSample's Armor (Defence)
+    private Integer exp; // VanyrSample's Experience Points (XP)
+    private Integer level; // VanyrSample's current Level
 
     private Label hpLabel; // Hit Points Label
     private Label damageLabel; // Damage Label
