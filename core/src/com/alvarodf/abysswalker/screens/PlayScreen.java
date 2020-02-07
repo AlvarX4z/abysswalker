@@ -65,7 +65,7 @@ public class PlayScreen implements Screen {
 
         camera.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); // Sets the camera at the start of the level
 
-        world = new World(new Vector2(0, -50), true); // Physics for gravity and sleeping objects
+        world = new World(new Vector2(0, -98), true); // Physics for gravity and sleeping objects
 
         debugRenderer = new Box2DDebugRenderer();
 
@@ -109,16 +109,16 @@ public class PlayScreen implements Screen {
      */
     private void handleInput(float dt) {
 
-        if (camera.position.x >= 0 && camera.position.x <= ((int)map.getProperties().get("width") * 16 - (int)map.getProperties().get("width") / 2)) { // PENSAR RESTA
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) { vanyr.body.applyLinearImpulse(new Vector2(0, 4), vanyr.body.getWorldCenter(), true); }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && vanyr.body.getLinearVelocity().x <= 2) {
 
-            if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.Y)) { camera.position.x += 1000 * dt; }
-            if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.T)) { camera.position.x -= 1000 * dt; }
+            vanyr.body.applyLinearImpulse(new Vector2(10000 * dt, 0), vanyr.body.getWorldCenter(), true);
 
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && vanyr.body.getLinearVelocity().x >= -2) {
 
-
+            vanyr.body.applyLinearImpulse(new Vector2(-10000 * dt, 0), vanyr.body.getWorldCenter(), true);
 
         }
 
@@ -133,6 +133,7 @@ public class PlayScreen implements Screen {
 
         handleInput(dt);
         world.step(1 / 60f, 6, 2);
+        camera.position.x = vanyr.body.getPosition().x;
         camera.update();
         mapRenderer.setView(camera);
 

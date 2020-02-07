@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class Vanyr extends Sprite {
 
     private World world;
-    private Body body;
+    public Body body;
 
     /**
      * @since January 24th, 2020
@@ -33,7 +33,7 @@ public class Vanyr extends Sprite {
     private void defineVanyr() {
 
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(100, 100);
+        bodyDef.position.set(100, 200);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
 
         body = world.createBody(bodyDef);
@@ -41,7 +41,7 @@ public class Vanyr extends Sprite {
         FixtureDef fixtureDef = new FixtureDef();
         CircleShape circle = new CircleShape();
 
-        circle.setRadius(50);
+        circle.setRadius(20);
 
         fixtureDef.shape = circle;
         body.createFixture(fixtureDef);
