@@ -52,7 +52,7 @@ public class PlayScreen implements Screen {
 
         this.game = game;
 
-        atlas = new TextureAtlas("android/assets/sprites/khorne.pack");
+        atlas = new TextureAtlas("android/assets/sprites/vanyr.pack");
 
         camera = new OrthographicCamera();
         gamePort = new FitViewport(AbysswalkerGame.VIEWPORT_WIDTH, AbysswalkerGame.VIEWPORT_HEIGHT, camera); //
@@ -64,7 +64,7 @@ public class PlayScreen implements Screen {
 
         camera.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); // Sets the camera at the start of the level
 
-        world = new World(new Vector2(0, -500), true); // Physics for gravity and sleeping objects
+        world = new World(new Vector2(0, -800), true); // Physics for gravity and sleeping objects
 
         debugRenderer = new Box2DDebugRenderer();
 
@@ -88,35 +88,9 @@ public class PlayScreen implements Screen {
      */
     private void handleInput(float dt) {
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && vanyr.body.getLinearVelocity().x >= -2) { // Movement: Horizontal Left (Axis X)
-
-            vanyr.body.applyLinearImpulse(new Vector2(-1 * dt, 0), vanyr.body.getWorldCenter(), true);
-
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { // Movement: Horizontal and Vertical Left (Axis X and Y)
-
-            vanyr.body.applyLinearImpulse(new Vector2(-1 * dt, 100), vanyr.body.getWorldCenter(), true);
-
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) { // Movement: Vertical (Axis Y)
-
-            vanyr.body.applyLinearImpulse(new Vector2(0, 100), vanyr.body.getWorldCenter(), true);
-
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { // Movement: Horizontal and Vertical Right (Axis X and Y)
-
-            vanyr.body.applyLinearImpulse(new Vector2(1 * dt, 100), vanyr.body.getWorldCenter(), true);
-
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && vanyr.body.getLinearVelocity().x <= 2) { // Movement: Horizontal Right (Axis X)
-
-            vanyr.body.applyLinearImpulse(new Vector2(1 * dt, 0), vanyr.body.getWorldCenter(), true);
-
-        }
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) { vanyr.body.applyLinearImpulse(new Vector2(-100, 0), vanyr.body.getWorldCenter(), true); }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) { vanyr.body.applyLinearImpulse(new Vector2(0, 100), vanyr.body.getWorldCenter(), true); }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { vanyr.body.applyLinearImpulse(new Vector2(100, 0), vanyr.body.getWorldCenter(), true); }
 
     }
 
@@ -207,6 +181,10 @@ public class PlayScreen implements Screen {
 
     }
 
+    /**
+     * @since February 8th, 2020
+     * @return
+     */
     public TextureAtlas getAtlas() { return atlas; }
 
 }
