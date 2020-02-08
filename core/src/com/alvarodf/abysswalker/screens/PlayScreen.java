@@ -3,23 +3,18 @@ package com.alvarodf.abysswalker.screens;
 import com.alvarodf.abysswalker.AbysswalkerGame;
 import com.alvarodf.abysswalker.scenes.Hud;
 import com.alvarodf.abysswalker.sprites.Vanyr;
+import com.alvarodf.abysswalker.tools.B2WorldCreator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -32,6 +27,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class PlayScreen implements Screen {
 
     private AbysswalkerGame game; // The game itself
+    private TextureAtlas atlas;
+
     private OrthographicCamera camera; // The orthographic camera which follows Vanyr
     private Viewport gamePort; // The game's viewport
     private Hud hud; // The game's HUD
@@ -55,6 +52,8 @@ public class PlayScreen implements Screen {
 
         this.game = game;
 
+        atlas = new TextureAtlas("android/assets/sprites/khorne.pack");
+
         camera = new OrthographicCamera();
         gamePort = new FitViewport(AbysswalkerGame.VIEWPORT_WIDTH, AbysswalkerGame.VIEWPORT_HEIGHT, camera); //
         hud = new Hud(game.batch);
@@ -65,33 +64,13 @@ public class PlayScreen implements Screen {
 
         camera.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); // Sets the camera at the start of the level
 
-        world = new World(new Vector2(0, -98), true); // Physics for gravity and sleeping objects
+        world = new World(new Vector2(0, -500), true); // Physics for gravity and sleeping objects
 
         debugRenderer = new Box2DDebugRenderer();
 
-        vanyr = new Vanyr(world);
+        vanyr = new Vanyr(world, this);
 
-        BodyDef bodyDef = new BodyDef();
-        PolygonShape shape = new PolygonShape();
-        FixtureDef fixtureDef = new FixtureDef();
-        Body body;
-
-        for (MapObject object : map.getLayers().get("forest_ground").getObjects().getByType(RectangleMapObject.class)) { // Creates body for ground
-
-            Rectangle rect = ((RectangleMapObject)object).getRectangle();
-
-            bodyDef.type = BodyDef.BodyType.StaticBody;
-            bodyDef.position.set(0, 0);
-
-            body = world.createBody(bodyDef);
-
-            shape.setAsBox(rect.getWidth(), rect.getHeight() / 10);
-
-            fixtureDef.shape = shape;
-
-            body.createFixture(fixtureDef);
-
-        }
+        new B2WorldCreator(world, map);
 
     }
 
@@ -105,20 +84,37 @@ public class PlayScreen implements Screen {
     /**
      *
      * @param dt Delta Time
-     * @since January 21st, 2020
+     * @since January 21st, 2020s
      */
     private void handleInput(float dt) {
 
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) { vanyr.body.applyLinearImpulse(new Vector2(0, 4), vanyr.body.getWorldCenter(), true); }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && vanyr.body.getLinearVelocity().x <= 2) {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && vanyr.body.getLinearVelocity().x >= -2) { // Movement: Horizontal Left (Axis X)
 
-            vanyr.body.applyLinearImpulse(new Vector2(10000 * dt, 0), vanyr.body.getWorldCenter(), true);
+            vanyr.body.applyLinearImpulse(new Vector2(-1 * dt, 0), vanyr.body.getWorldCenter(), true);
 
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && vanyr.body.getLinearVelocity().x >= -2) {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { // Movement: Horizontal and Vertical Left (Axis X and Y)
 
-            vanyr.body.applyLinearImpulse(new Vector2(-10000 * dt, 0), vanyr.body.getWorldCenter(), true);
+            vanyr.body.applyLinearImpulse(new Vector2(-1 * dt, 100), vanyr.body.getWorldCenter(), true);
+
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) { // Movement: Vertical (Axis Y)
+
+            vanyr.body.applyLinearImpulse(new Vector2(0, 100), vanyr.body.getWorldCenter(), true);
+
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { // Movement: Horizontal and Vertical Right (Axis X and Y)
+
+            vanyr.body.applyLinearImpulse(new Vector2(1 * dt, 100), vanyr.body.getWorldCenter(), true);
+
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && vanyr.body.getLinearVelocity().x <= 2) { // Movement: Horizontal Right (Axis X)
+
+            vanyr.body.applyLinearImpulse(new Vector2(1 * dt, 0), vanyr.body.getWorldCenter(), true);
 
         }
 
@@ -133,6 +129,7 @@ public class PlayScreen implements Screen {
 
         handleInput(dt);
         world.step(1 / 60f, 6, 2);
+        vanyr.update(dt);
         camera.position.x = vanyr.body.getPosition().x;
         camera.update();
         mapRenderer.setView(camera);
@@ -154,6 +151,11 @@ public class PlayScreen implements Screen {
 
         mapRenderer.render();
         debugRenderer.render(world, camera.combined);
+
+        game.batch.setProjectionMatrix(camera.combined);
+        game.batch.begin();
+        vanyr.draw(game.batch);
+        game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined); // Sets the batch to draw what the HUD camera sees
         hud.stage.draw();
@@ -195,6 +197,16 @@ public class PlayScreen implements Screen {
      * @since January 21st, 2020
      */
     @Override
-    public void dispose() { }
+    public void dispose() {
+
+        map.dispose();
+        mapRenderer.dispose();
+        world.dispose();
+        debugRenderer.dispose();
+        hud.dispose();
+
+    }
+
+    public TextureAtlas getAtlas() { return atlas; }
 
 }
