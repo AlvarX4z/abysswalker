@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.Array;
  * @author Alvaro de Francisco
  * @since January 24th, 2020
  */
-public class Vanyr extends Sprite {
+public final class Vanyr extends Sprite {
 
     public enum State { STANDING, JUMPING, ATTACKING, RUNNING, DYING }
     public State currentState;
@@ -25,11 +25,11 @@ public class Vanyr extends Sprite {
     public Body body;
     private TextureRegion vanyrStand;
 
-    private Animation vanyrStanding;
-    private Animation vanyrJumping;
-    private Animation vanyrAttacking;
-    private Animation vanyrRunning;
-    private Animation vanyrDying;
+    private Animation<TextureRegion> vanyrStanding;
+    private Animation<TextureRegion> vanyrJumping;
+    private Animation<TextureRegion> vanyrAttacking;
+    private Animation<TextureRegion> vanyrRunning;
+    private Animation<TextureRegion> vanyrDying;
 
     private float stateTimer;
     private boolean runningRight;
@@ -38,6 +38,7 @@ public class Vanyr extends Sprite {
     /**
      * @since January 24th, 2020
      * @param world
+     * @param screen
      */
     public Vanyr(World world, PlayScreen screen) {
 
@@ -112,8 +113,94 @@ public class Vanyr extends Sprite {
 
     }
 
-    public void update(float dt) { setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2); }
+    /**
+     *
+     * @param dt
+     * @since February 8th, 2020
+     */
+    public void update(float dt) {
 
+        setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
+        // setRegion(getFrame(dt));
+
+    }
+
+    /**
+     *
+     * @param dt
+     * @return
+     * @since February 10th, 2020
+     */
+    /*
+    public TextureRegion getFrame(float dt) {
+
+        currentState = getState();
+
+        TextureRegion region;
+
+        switch (currentState) {
+
+            case JUMPING:
+                region = vanyrJumping.getKeyFrame(stateTimer);
+                break;
+
+            case RUNNING:
+                region = vanyrRunning.getKeyFrame(stateTimer, true);
+                break;
+
+            case STANDING:
+                region = vanyrStanding.getKeyFrame(stateTimer, true);
+                break;
+
+            case ATTACKING:
+                region = vanyrAttacking.getKeyFrame(stateTimer);
+                break;
+
+            case DYING:
+                region = vanyrDying.getKeyFrame(stateTimer);
+                break;
+
+            default:
+                region = vanyrStand;
+                break;
+
+        }
+
+        if ((body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()) {
+
+            region.flip(true, false);
+            runningRight = false;
+
+        } else if ((body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()) {
+
+            region.flip(true, false);
+            runningRight = true;
+
+        }
+
+        stateTimer = currentState == previousState ? stateTimer + dt : 0;
+
+        previousState = currentState;
+
+        return region;
+
+    }
+    */
+    /**
+     *
+     * @return
+     * @since February 10th, 2020
+     */
+    /*
+    private State getState() {
+
+        if (body.getLinearVelocity().y > 0) { return State.JUMPING; }
+        else if (body.getLinearVelocity().y < 0) { return State.JUMPING; }
+        else if (body.getLinearVelocity().x != 0) { return State.RUNNING; }
+        else { return State.STANDING; }
+
+    }
+    */
     /**
      * @since January 24th, 2020
      */

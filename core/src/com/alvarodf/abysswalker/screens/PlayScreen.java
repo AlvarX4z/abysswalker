@@ -24,7 +24,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  * @author Alvaro de Francisco
  * @since January 21st, 2020
  */
-public class PlayScreen implements Screen {
+public final class PlayScreen implements Screen {
 
     private AbysswalkerGame game; // The game itself
     private TextureAtlas atlas;

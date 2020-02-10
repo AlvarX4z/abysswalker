@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  * @author Alvaro de Francisco
  * @since January 21st, 2020
  */
-public class Hud implements Disposable {
+public final class Hud implements Disposable {
 
     private Viewport viewport; // Viewport to be displayed
 

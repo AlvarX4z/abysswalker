@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * @author Alvaro de Francisco
  * @since January 20th, 2020
  */
-public class AbysswalkerGame extends Game {
+public final class AbysswalkerGame extends Game {
 
     public final static int VIEWPORT_WIDTH = 400; // Viewport's width (pixels)
     public final static int VIEWPORT_HEIGHT = 208; // Viewport's height (pixels)
