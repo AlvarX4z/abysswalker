@@ -6,7 +6,7 @@ repeat: none
 vanyr
   rotate: false
   xy: 1, 1
-  size: 576, 336
-  orig: 576, 336
+  size: 496, 210
+  orig: 496, 210
   offset: 0, 0
   index: -1

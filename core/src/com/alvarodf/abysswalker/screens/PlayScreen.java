@@ -91,6 +91,7 @@ public final class PlayScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) { vanyr.body.applyLinearImpulse(new Vector2(-100, 0), vanyr.body.getWorldCenter(), true); }
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) { vanyr.body.applyLinearImpulse(new Vector2(0, 100), vanyr.body.getWorldCenter(), true); }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { vanyr.body.applyLinearImpulse(new Vector2(100, 0), vanyr.body.getWorldCenter(), true); }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) { vanyr.body.applyLinearImpulse(new Vector2(0, -100), vanyr.body.getWorldCenter(), true); }
 
     }
 

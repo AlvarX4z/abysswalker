@@ -17,23 +17,22 @@ import com.badlogic.gdx.utils.Array;
  */
 public final class Vanyr extends Sprite {
 
-    public enum State { STANDING, JUMPING, ATTACKING, RUNNING, DYING }
-    public State currentState;
-    public State previousState;
+    public enum State { STANDING, JUMPING, FALLING, ATTACKING, RUNNING, DYING }
+    private State currentState;
+    private State previousState;
 
     private World world;
     public Body body;
-    private TextureRegion vanyrStand;
 
     private Animation<TextureRegion> vanyrStanding;
     private Animation<TextureRegion> vanyrJumping;
+    private Animation<TextureRegion> vanyrFalling;
     private Animation<TextureRegion> vanyrAttacking;
     private Animation<TextureRegion> vanyrRunning;
     private Animation<TextureRegion> vanyrDying;
 
     private float stateTimer;
     private boolean runningRight;
-
 
     /**
      * @since January 24th, 2020
@@ -52,64 +51,70 @@ public final class Vanyr extends Sprite {
 
         Array<TextureRegion> standingFrames = new Array<>();
         Array<TextureRegion> jumpingFrames = new Array<>();
+        Array<TextureRegion> fallingFrames = new Array<>();
         Array<TextureRegion> attackingFrames = new Array<>();
         Array<TextureRegion> runningFrames = new Array<>();
         Array<TextureRegion> dyingFrames = new Array<>();
 
-        // STANDING
-        for (int i = 0; i <= 0; i++) {
+        standingFrames.add(new TextureRegion(getTexture(), 0, 0, 28, 43));
+        standingFrames.add(new TextureRegion(getTexture(), 30, 0, 28, 43));
+        standingFrames.add(new TextureRegion(getTexture(), 60, 0, 30, 43));
+        standingFrames.add(new TextureRegion(getTexture(), 91, 0, 27, 43));
 
-            for (int j = 0; j <= 3; j++) { standingFrames.add(new TextureRegion(getTexture(), 16 * i, 0, 48, 48)); }
-
-        }
-
-        vanyrStanding = new Animation(0.1f, standingFrames);
+        vanyrStanding = new Animation(0.13f, standingFrames);
         standingFrames.clear();
 
-        // ATTACKING
-        for (int i = 1; i <= 1; i++) {
-
-            for (int j = 0; j <= 5; j++) { attackingFrames.add(new TextureRegion(getTexture(), 16 * i, 0, 48, 48)); }
-
-        }
+        attackingFrames.add(new TextureRegion(getTexture(), 0, 44, 27, 41));
+        attackingFrames.add(new TextureRegion(getTexture(), 28, 44, 33, 41));
+        attackingFrames.add(new TextureRegion(getTexture(), 62, 44, 80, 41));
+        attackingFrames.add(new TextureRegion(getTexture(), 143, 44, 63, 41));
+        attackingFrames.add(new TextureRegion(getTexture(), 208, 44, 38, 41));
+        attackingFrames.add(new TextureRegion(getTexture(), 247, 44, 34, 41));
 
         vanyrAttacking = new Animation(0.1f, attackingFrames);
         attackingFrames.clear();
 
-        // JUMPING
-        for (int i = 3; i <= 3; i++) {
+        jumpingFrames.add(new TextureRegion(getTexture(), 0, 86, 36, 43));
+        jumpingFrames.add(new TextureRegion(getTexture(), 40, 86, 38, 43));
+        jumpingFrames.add(new TextureRegion(getTexture(), 79, 86, 37, 43));
+        jumpingFrames.add(new TextureRegion(getTexture(), 117, 86, 35, 43));
 
-            for (int j = 0; j <= 3; j++) { jumpingFrames.add(new TextureRegion(getTexture(), 16 * i, 0, 48, 48)); }
-
-        }
-
-        vanyrJumping = new Animation(0.1f, jumpingFrames);
+        vanyrJumping = new Animation(0.05f, jumpingFrames);
         jumpingFrames.clear();
 
-        // RUNNING
-        for (int i = 4; i <= 4; i++) {
+        fallingFrames.add(new TextureRegion(getTexture(), 117, 86, 35, 43));
+        fallingFrames.add(new TextureRegion(getTexture(), 79, 86, 37, 43));
+        fallingFrames.add(new TextureRegion(getTexture(), 40, 86, 38, 43));
+        fallingFrames.add(new TextureRegion(getTexture(), 0, 86, 36, 43));
 
-            for (int j = 0; j <= 5; j++) { runningFrames.add(new TextureRegion(getTexture(), 16 * i, 0, 48, 48)); }
+        vanyrFalling = new Animation(0.05f, fallingFrames);
+        fallingFrames.clear();
 
-        }
+        runningFrames.add(new TextureRegion(getTexture(), 0, 131, 46, 44));
+        runningFrames.add(new TextureRegion(getTexture(), 48, 131, 39, 44));
+        runningFrames.add(new TextureRegion(getTexture(), 88, 131, 41, 44));
+        runningFrames.add(new TextureRegion(getTexture(), 130, 131, 36, 44));
+        runningFrames.add(new TextureRegion(getTexture(), 166, 131, 37, 44));
+        runningFrames.add(new TextureRegion(getTexture(), 203, 131, 47, 44));
+        runningFrames.add(new TextureRegion(getTexture(), 251, 131, 44, 44));
+        runningFrames.add(new TextureRegion(getTexture(), 295, 131, 39, 44));
+        runningFrames.add(new TextureRegion(getTexture(), 334, 131, 42, 44));
+        runningFrames.add(new TextureRegion(getTexture(), 377, 131, 35, 44));
+        runningFrames.add(new TextureRegion(getTexture(), 413, 131, 36, 44));
+        runningFrames.add(new TextureRegion(getTexture(), 450, 131, 48, 44));
 
-        vanyrRunning = new Animation(0.1f, runningFrames);
+        vanyrRunning = new Animation(0.08f, runningFrames);
         runningFrames.clear();
 
-        // DYING
-        for (int i = 6; i <= 6; i++) {
-
-            for (int j = 0; j <= 2; j++) { dyingFrames.add(new TextureRegion(getTexture(), 16 * i, 0, 48, 48)); }
-
-        }
+        dyingFrames.add(new TextureRegion(getTexture(), 0, 175, 34, 34));
+        dyingFrames.add(new TextureRegion(getTexture(), 35, 175, 39, 34));
+        dyingFrames.add(new TextureRegion(getTexture(), 74, 175, 39, 34));
 
         vanyrDying = new Animation(0.1f, dyingFrames);
         dyingFrames.clear();
 
-        vanyrStand = new TextureRegion(getTexture(), 26, 0, 48, 48);
         defineVanyr();
         setBounds(0, 0, 48, 48);
-        setRegion(vanyrStand);
 
     }
 
@@ -121,7 +126,7 @@ public final class Vanyr extends Sprite {
     public void update(float dt) {
 
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
-        // setRegion(getFrame(dt));
+        setRegion(getFrame(dt));
 
     }
 
@@ -131,7 +136,6 @@ public final class Vanyr extends Sprite {
      * @return
      * @since February 10th, 2020
      */
-    /*
     public TextureRegion getFrame(float dt) {
 
         currentState = getState();
@@ -142,6 +146,10 @@ public final class Vanyr extends Sprite {
 
             case JUMPING:
                 region = vanyrJumping.getKeyFrame(stateTimer);
+                break;
+
+            case FALLING:
+                region = vanyrFalling.getKeyFrame(stateTimer);
                 break;
 
             case RUNNING:
@@ -161,7 +169,7 @@ public final class Vanyr extends Sprite {
                 break;
 
             default:
-                region = vanyrStand;
+                region = vanyrStanding.getKeyFrame(stateTimer, true);
                 break;
 
         }
@@ -185,13 +193,12 @@ public final class Vanyr extends Sprite {
         return region;
 
     }
-    */
+
     /**
      *
      * @return
      * @since February 10th, 2020
      */
-    /*
     private State getState() {
 
         if (body.getLinearVelocity().y > 0) { return State.JUMPING; }
@@ -200,14 +207,14 @@ public final class Vanyr extends Sprite {
         else { return State.STANDING; }
 
     }
-    */
+
     /**
      * @since January 24th, 2020
      */
     private void defineVanyr() {
 
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(20, 200);
+        bodyDef.position.set(20, 24);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
 
         body = world.createBody(bodyDef);
