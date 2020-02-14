@@ -1,6 +1,8 @@
 package com.alvarodf.abysswalker.sprites;
 
 import com.alvarodf.abysswalker.screens.PlayScreen;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -12,13 +14,14 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
 /**
+ *
  * @author Alvaro de Francisco
  * @since January 24th, 2020
  */
-public final class Vanyr extends Sprite {
+public final class Vanyr extends Sprite  {
 
     public enum State { STANDING, JUMPING, FALLING, ATTACKING, RUNNING, DYING }
-    private State currentState;
+    public State currentState;
     private State previousState;
 
     private World world;
@@ -34,14 +37,21 @@ public final class Vanyr extends Sprite {
     private float stateTimer;
     private boolean runningRight;
 
+    public int hp; // Vanyr's Hit Points (Life)
+    public int damage; // Vanyr's Damage
+    public int armor; // Vanyr's Armor (Defence)
+    public int exp; // Vanyr's Experience Points (XP)
+    public int level; // Vanyr's current Level
+
     /**
+     *
      * @since January 24th, 2020
      * @param world
      * @param screen
      */
     public Vanyr(World world, PlayScreen screen) {
 
-        super(screen.getAtlas().findRegion("vanyr"));
+        super(screen.getVanyrAtlas().findRegion("vanyr"));
         this.world = world;
 
         currentState = State.STANDING;
@@ -64,14 +74,14 @@ public final class Vanyr extends Sprite {
         vanyrStanding = new Animation(0.13f, standingFrames);
         standingFrames.clear();
 
-        attackingFrames.add(new TextureRegion(getTexture(), 0, 44, 27, 41));
-        attackingFrames.add(new TextureRegion(getTexture(), 28, 44, 33, 41));
-        attackingFrames.add(new TextureRegion(getTexture(), 62, 44, 80, 41));
-        attackingFrames.add(new TextureRegion(getTexture(), 143, 44, 63, 41));
-        attackingFrames.add(new TextureRegion(getTexture(), 208, 44, 38, 41));
-        attackingFrames.add(new TextureRegion(getTexture(), 247, 44, 34, 41));
+        attackingFrames.add(new TextureRegion(getTexture(), 0, 45, 27, 41));
+        attackingFrames.add(new TextureRegion(getTexture(), 29, 45, 33, 41));
+        attackingFrames.add(new TextureRegion(getTexture(), 63, 45, 80, 41));
+        attackingFrames.add(new TextureRegion(getTexture(), 144, 45, 63, 41));
+        attackingFrames.add(new TextureRegion(getTexture(), 208, 45, 38, 41));
+        attackingFrames.add(new TextureRegion(getTexture(), 248, 45, 34, 41));
 
-        vanyrAttacking = new Animation(0.1f, attackingFrames);
+        vanyrAttacking = new Animation(0.05f, attackingFrames);
         attackingFrames.clear();
 
         jumpingFrames.add(new TextureRegion(getTexture(), 0, 86, 36, 43));
@@ -79,7 +89,7 @@ public final class Vanyr extends Sprite {
         jumpingFrames.add(new TextureRegion(getTexture(), 79, 86, 37, 43));
         jumpingFrames.add(new TextureRegion(getTexture(), 117, 86, 35, 43));
 
-        vanyrJumping = new Animation(0.05f, jumpingFrames);
+        vanyrJumping = new Animation(0.2f, jumpingFrames);
         jumpingFrames.clear();
 
         fallingFrames.add(new TextureRegion(getTexture(), 117, 86, 35, 43));
@@ -107,8 +117,8 @@ public final class Vanyr extends Sprite {
         runningFrames.clear();
 
         dyingFrames.add(new TextureRegion(getTexture(), 0, 175, 34, 34));
-        dyingFrames.add(new TextureRegion(getTexture(), 35, 175, 39, 34));
-        dyingFrames.add(new TextureRegion(getTexture(), 74, 175, 39, 34));
+        dyingFrames.add(new TextureRegion(getTexture(), 36, 176, 39, 34));
+        dyingFrames.add(new TextureRegion(getTexture(), 76, 176, 39, 34));
 
         vanyrDying = new Animation(0.1f, dyingFrames);
         dyingFrames.clear();
@@ -204,11 +214,14 @@ public final class Vanyr extends Sprite {
         if (body.getLinearVelocity().y > 0) { return State.JUMPING; }
         else if (body.getLinearVelocity().y < 0) { return State.JUMPING; }
         else if (body.getLinearVelocity().x != 0) { return State.RUNNING; }
+        else if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) { return State.ATTACKING; }
+        else if (Gdx.input.isKeyPressed(Input.Keys.R)) { return State.DYING; }
         else { return State.STANDING; }
 
     }
 
     /**
+     *
      * @since January 24th, 2020
      */
     private void defineVanyr() {

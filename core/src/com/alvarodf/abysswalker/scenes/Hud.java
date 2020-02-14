@@ -1,6 +1,7 @@
 package com.alvarodf.abysswalker.scenes;
 
 import com.alvarodf.abysswalker.AbysswalkerGame;
+import com.alvarodf.abysswalker.sprites.Vanyr;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -21,13 +22,11 @@ public final class Hud implements Disposable {
 
     private Viewport viewport; // Viewport to be displayed
 
-    // MIRAR PARA COGERLOS DESDE VANYR
-
-    private Integer hp; // VanyrSample's Hit Points (Life)
-    private Integer damage; // VanyrSample's Damage
-    private Integer armor; // VanyrSample's Armor (Defence)
-    private Integer exp; // VanyrSample's Experience Points (XP)
-    private Integer level; // VanyrSample's current Level
+    private int hp; // Vanyr's Hit Points (Life)
+    private int damage; // Vanyr's Damage
+    private int armor; // Vanyr's Armor (Defence)
+    private int exp; // Vanyr's Experience Points (XP)
+    private int level; // Vanyr's current Level
 
     private Label hpLabel; // Hit Points Label
     private Label damageLabel; // Damage Label
@@ -44,7 +43,7 @@ public final class Hud implements Disposable {
      */
     public Hud(SpriteBatch b) {
 
-        hp = 10; // Sample values
+        hp = 10;
         damage = 5;
         armor = 3;
         exp = 0;
@@ -57,7 +56,7 @@ public final class Hud implements Disposable {
         table.top();
         table.setFillParent(true);
 
-        hpLabel = new Label("HP - " + hp, new Label.LabelStyle(new BitmapFont(), Color.WHITE)); // Label's content sample
+        hpLabel = new Label("HP - " + hp, new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         damageLabel = new Label("DMG - " + damage, new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         armorLabel = new Label("ARM - " + armor, new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         expLabel = new Label("EXP - " + exp, new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -73,6 +72,10 @@ public final class Hud implements Disposable {
 
     }
 
+    /**
+     *
+     * @since January 21st, 2020
+     */
     @Override
     public void dispose() { stage.dispose(); }
 

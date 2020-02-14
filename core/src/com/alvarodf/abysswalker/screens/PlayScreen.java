@@ -27,7 +27,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public final class PlayScreen implements Screen {
 
     private AbysswalkerGame game; // The game itself
-    private TextureAtlas atlas;
+    private TextureAtlas vanyrAtlas; //
 
     private OrthographicCamera camera; // The orthographic camera which follows Vanyr
     private Viewport gamePort; // The game's viewport
@@ -52,7 +52,7 @@ public final class PlayScreen implements Screen {
 
         this.game = game;
 
-        atlas = new TextureAtlas("android/assets/sprites/vanyr.pack");
+        vanyrAtlas = new TextureAtlas("android/assets/sprites/vanyr.pack");
 
         camera = new OrthographicCamera();
         gamePort = new FitViewport(AbysswalkerGame.VIEWPORT_WIDTH, AbysswalkerGame.VIEWPORT_HEIGHT, camera); //
@@ -64,7 +64,7 @@ public final class PlayScreen implements Screen {
 
         camera.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); // Sets the camera at the start of the level
 
-        world = new World(new Vector2(0, -800), true); // Physics for gravity and sleeping objects
+        world = new World(new Vector2(0, -18000), true); // Physics for gravity and sleeping objects
 
         debugRenderer = new Box2DDebugRenderer();
 
@@ -89,9 +89,10 @@ public final class PlayScreen implements Screen {
     private void handleInput(float dt) {
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) { vanyr.body.applyLinearImpulse(new Vector2(-100, 0), vanyr.body.getWorldCenter(), true); }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) { vanyr.body.applyLinearImpulse(new Vector2(0, 100), vanyr.body.getWorldCenter(), true); }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { vanyr.body.applyLinearImpulse(new Vector2(100, 0), vanyr.body.getWorldCenter(), true); }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) { vanyr.body.applyLinearImpulse(new Vector2(0, -100), vanyr.body.getWorldCenter(), true); }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) { vanyr.body.applyForceToCenter(0, 100000, true); }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) { vanyr.currentState = Vanyr.State.ATTACKING; }
+        if (Gdx.input.isKeyPressed(Input.Keys.R)) { vanyr.currentState = Vanyr.State.DYING; }
 
     }
 
@@ -186,6 +187,6 @@ public final class PlayScreen implements Screen {
      * @since February 8th, 2020
      * @return
      */
-    public TextureAtlas getAtlas() { return atlas; }
+    public TextureAtlas getVanyrAtlas() { return vanyrAtlas; }
 
 }
