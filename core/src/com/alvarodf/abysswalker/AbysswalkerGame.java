@@ -2,6 +2,8 @@ package com.alvarodf.abysswalker;
 
 import com.alvarodf.abysswalker.screens.PlayScreen;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
@@ -17,6 +19,8 @@ public final class AbysswalkerGame extends Game {
 
     public SpriteBatch batch; // Allocated Sprites to be created and rendered
 
+    public static AssetManager manager; // Helps managing game's assets
+
     /**
      * Mandatory function from LibGDX for creating the basic elements of the game.
      * @since January 20th, 2020
@@ -25,6 +29,12 @@ public final class AbysswalkerGame extends Game {
     public void create() {
 
         batch = new SpriteBatch();
+        manager = new AssetManager();
+
+        manager.load("audio/main_theme.mp3", Music.class);
+        // manager.load("String sonido", Sound.class);
+        manager.finishLoading();
+
         setScreen(new PlayScreen(this));
 
     }
@@ -41,6 +51,12 @@ public final class AbysswalkerGame extends Game {
      * @since January 20th, 2020
      */
     @Override
-    public void dispose() { batch.dispose(); }
+    public void dispose() {
+
+        super.dispose();
+        batch.dispose();
+        manager.dispose();
+
+    }
 
 }

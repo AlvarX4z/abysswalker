@@ -7,6 +7,7 @@ import com.alvarodf.abysswalker.tools.B2WorldCreator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -38,6 +39,8 @@ public final class PlayScreen implements Screen {
     private TiledMap map; // The TiledMap itself
     private OrthogonalTiledMapRenderer mapRenderer; // The TiledMap rendered in an orthogonal basis
 
+    private Music music;
+
     // ----------------------- BoX2D Variables -----------------------
 
     private World world;
@@ -53,11 +56,9 @@ public final class PlayScreen implements Screen {
         this.game = game;
 
         vanyrAtlas = new TextureAtlas("android/assets/sprites/vanyr.pack");
-
         camera = new OrthographicCamera();
         gamePort = new FitViewport(AbysswalkerGame.VIEWPORT_WIDTH, AbysswalkerGame.VIEWPORT_HEIGHT, camera); //
         hud = new Hud(game.batch);
-
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("android/assets/maps/map_forest.tmx"); // Stating map's path
         mapRenderer = new OrthogonalTiledMapRenderer(map);
@@ -65,12 +66,14 @@ public final class PlayScreen implements Screen {
         camera.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); // Sets the camera at the start of the level
 
         world = new World(new Vector2(0, -18000), true); // Physics for gravity and sleeping objects
-
         debugRenderer = new Box2DDebugRenderer();
+        vanyr = new Vanyr(this);
 
-        vanyr = new Vanyr(world, this);
+        music = AbysswalkerGame.manager.get("audio/main_theme.mp3", Music.class);
+        music.setLooping(true);
+        music.play();
 
-        new B2WorldCreator(world, map);
+        new B2WorldCreator(this);
 
     }
 
@@ -106,6 +109,7 @@ public final class PlayScreen implements Screen {
         handleInput(dt);
         world.step(1 / 60f, 6, 2);
         vanyr.update(dt);
+        hud.update(dt);
         camera.position.x = vanyr.body.getPosition().x;
         camera.update();
         mapRenderer.setView(camera);
@@ -184,9 +188,24 @@ public final class PlayScreen implements Screen {
     }
 
     /**
-     * @since February 8th, 2020
+     *
      * @return
+     * @since February 8th, 2020
      */
     public TextureAtlas getVanyrAtlas() { return vanyrAtlas; }
+
+    /**
+     *
+     * @return
+     * @since February 25th, 2020
+     */
+    public TiledMap getMap() { return map; }
+
+    /**
+     *
+     * @return
+     * @since February 25th, 2020
+     */
+    public World getWorld() { return world; }
 
 }

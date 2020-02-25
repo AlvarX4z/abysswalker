@@ -1,5 +1,6 @@
 package com.alvarodf.abysswalker.tools;
 
+import com.alvarodf.abysswalker.screens.PlayScreen;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -13,10 +14,12 @@ import com.badlogic.gdx.physics.box2d.World;
 /**
  * @since February 8th, 2020
  */
-public class B2WorldCreator {
+public final class B2WorldCreator {
 
-    public B2WorldCreator(World world, TiledMap map) {
+    public B2WorldCreator(PlayScreen screen) {
 
+        World world = screen.getWorld();
+        TiledMap map = screen.getMap();
         BodyDef bodyDef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fixtureDef = new FixtureDef();

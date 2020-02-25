@@ -46,13 +46,12 @@ public final class Vanyr extends Sprite  {
     /**
      *
      * @since January 24th, 2020
-     * @param world
      * @param screen
      */
-    public Vanyr(World world, PlayScreen screen) {
+    public Vanyr(PlayScreen screen) {
 
         super(screen.getVanyrAtlas().findRegion("vanyr"));
-        this.world = world;
+        this.world = screen.getWorld();
 
         currentState = State.STANDING;
         previousState = State.STANDING;

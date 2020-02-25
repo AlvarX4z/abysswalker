@@ -1,7 +1,6 @@
 package com.alvarodf.abysswalker.scenes;
 
 import com.alvarodf.abysswalker.AbysswalkerGame;
-import com.alvarodf.abysswalker.sprites.Vanyr;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -25,13 +24,13 @@ public final class Hud implements Disposable {
     private int hp; // Vanyr's Hit Points (Life)
     private int damage; // Vanyr's Damage
     private int armor; // Vanyr's Armor (Defence)
-    private int exp; // Vanyr's Experience Points (XP)
+    private static int exp; // Vanyr's Experience Points (XP)
     private int level; // Vanyr's current Level
 
     private Label hpLabel; // Hit Points Label
     private Label damageLabel; // Damage Label
     private Label armorLabel; // Armor Label
-    private Label expLabel; // Experience Points Label
+    private static Label expLabel; // Experience Points Label
     private Label levelLabel; // Level Label
 
     public Stage stage; // Stage where to add these labels
@@ -69,6 +68,81 @@ public final class Hud implements Disposable {
         table.add(levelLabel).expandX().padTop(5);
 
         stage.addActor(table); // Adding the filled table to the stage
+
+    }
+
+    /**
+     *
+     * @param dt
+     * @since February 25th, 2020
+     */
+    public void update(float dt) {
+
+        if (level == 2) {
+
+            hp = 12;
+            damage = 7;
+            armor = 5;
+            exp = 0;
+
+            hpLabel.setText("HP - " + hp);
+            damageLabel.setText("DMG - " + damage);
+            armorLabel.setText("ARM - " + armor);
+            expLabel.setText("EXP - " + exp);
+            levelLabel.setText("LVL - " + level);
+
+        } else if (level == 3) {
+
+            hp = 15;
+            damage = 10;
+            armor = 8;
+            exp = 0;
+
+            hpLabel.setText("HP - " + hp);
+            damageLabel.setText("DMG - " + damage);
+            armorLabel.setText("ARM - " + armor);
+            expLabel.setText("EXP - " + exp);
+            levelLabel.setText("LVL - " + level);
+
+        } else if (level == 4) {
+
+            hp = 19;
+            damage = 14;
+            armor = 12;
+            exp = 0;
+
+            hpLabel.setText("HP - " + hp);
+            damageLabel.setText("DMG - " + damage);
+            armorLabel.setText("ARM - " + armor);
+            expLabel.setText("EXP - " + exp);
+            levelLabel.setText("LVL - " + level);
+
+        } else if (level == 5) {
+
+            hp = 24;
+            damage = 19;
+            armor = 17;
+            exp = 0;
+
+            hpLabel.setText("HP - " + hp);
+            damageLabel.setText("DMG - " + damage);
+            armorLabel.setText("ARM - " + armor);
+            expLabel.setText("EXP - " + exp);
+            levelLabel.setText("LVL - " + level);
+
+        }
+
+    }
+
+    /**
+     *
+     * @param value
+     * @since February 25th, 2020
+     */
+    public static void addEXP(int value) {
+
+        exp += value;
+        expLabel.setText("EXP - " + exp);
 
     }
 
