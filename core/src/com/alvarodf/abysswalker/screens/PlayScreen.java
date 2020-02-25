@@ -2,6 +2,7 @@ package com.alvarodf.abysswalker.screens;
 
 import com.alvarodf.abysswalker.AbysswalkerGame;
 import com.alvarodf.abysswalker.scenes.Hud;
+import com.alvarodf.abysswalker.sprites.Dragon;
 import com.alvarodf.abysswalker.sprites.Vanyr;
 import com.alvarodf.abysswalker.tools.B2WorldCreator;
 import com.badlogic.gdx.Gdx;
@@ -28,12 +29,14 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public final class PlayScreen implements Screen {
 
     private AbysswalkerGame game; // The game itself
-    private TextureAtlas vanyrAtlas; //
+    private TextureAtlas vanyrAtlas; // Vanyr's TextureAtlas
+    private TextureAtlas dragonAtlas; // Enemy - Dragon's TextureAtlas
 
     private OrthographicCamera camera; // The orthographic camera which follows Vanyr
     private Viewport gamePort; // The game's viewport
     private Hud hud; // The game's HUD
     private Vanyr vanyr; // The player's character
+    private Dragon dragon;
 
     private TmxMapLoader mapLoader; // The TiledMap Loader (.tmx)
     private TiledMap map; // The TiledMap itself
@@ -56,6 +59,7 @@ public final class PlayScreen implements Screen {
         this.game = game;
 
         vanyrAtlas = new TextureAtlas("android/assets/sprites/vanyr.pack");
+        dragonAtlas = new TextureAtlas("android/assets/sprites/dragon.pack");
         camera = new OrthographicCamera();
         gamePort = new FitViewport(AbysswalkerGame.VIEWPORT_WIDTH, AbysswalkerGame.VIEWPORT_HEIGHT, camera); //
         hud = new Hud(game.batch);
@@ -67,7 +71,9 @@ public final class PlayScreen implements Screen {
 
         world = new World(new Vector2(0, -18000), true); // Physics for gravity and sleeping objects
         debugRenderer = new Box2DDebugRenderer();
+
         vanyr = new Vanyr(this);
+        dragon = new Dragon(this);
 
         music = AbysswalkerGame.manager.get("audio/main_theme.mp3", Music.class);
         music.setLooping(true);
@@ -109,6 +115,7 @@ public final class PlayScreen implements Screen {
         handleInput(dt);
         world.step(1 / 60f, 6, 2);
         vanyr.update(dt);
+        dragon.update(dt);
         hud.update(dt);
         camera.position.x = vanyr.body.getPosition().x;
         camera.update();
@@ -135,6 +142,7 @@ public final class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
         vanyr.draw(game.batch);
+        dragon.draw(game.batch);
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined); // Sets the batch to draw what the HUD camera sees
@@ -193,6 +201,13 @@ public final class PlayScreen implements Screen {
      * @since February 8th, 2020
      */
     public TextureAtlas getVanyrAtlas() { return vanyrAtlas; }
+
+    /**
+     *
+     * @return
+     * @since February 25th, 2020
+     */
+    public TextureAtlas getDragonAtlas() { return dragonAtlas; }
 
     /**
      *

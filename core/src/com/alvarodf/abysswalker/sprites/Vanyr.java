@@ -37,12 +37,6 @@ public final class Vanyr extends Sprite  {
     private float stateTimer;
     private boolean runningRight;
 
-    public int hp; // Vanyr's Hit Points (Life)
-    public int damage; // Vanyr's Damage
-    public int armor; // Vanyr's Armor (Defence)
-    public int exp; // Vanyr's Experience Points (XP)
-    public int level; // Vanyr's current Level
-
     /**
      *
      * @since January 24th, 2020
