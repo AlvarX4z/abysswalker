@@ -3,11 +3,12 @@ package com.alvarodf.abysswalker.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * @since February 25th, 2020
  */
-public class BDOpenHelper extends SQLiteOpenHelper {
+public final class BDOpenHelper extends SQLiteOpenHelper {
 
     /**
      *
@@ -23,7 +24,9 @@ public class BDOpenHelper extends SQLiteOpenHelper {
      * @since February 25th, 2020
      */
     @Override
-    public void onCreate(SQLiteDatabase db) { db.execSQL("create table vanyr(hp int(2), dmg int(2), arm int(2), exp int(4), lvl int(1));"); }
+    public void onCreate(SQLiteDatabase db) { db.execSQL("create table vanyr(hp int(2), dmg int(2), arm int(2), exp int(4), lvl int(1));");
+        Log.d("DB", "DB creada");
+    }
 
     /**
      *

@@ -5,7 +5,7 @@ import com.alvarodf.abysswalker.db.DataBase;
 /**
  * @since February 25th, 2020
  */
-public class DesktopDB implements DataBase {
+public final class DesktopDB implements DataBase {
 
     @Override
     public int[] loadInfo() {

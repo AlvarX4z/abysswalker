@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 /**
  * @since February 25th, 2020
  */
-public class AndroidDB implements DataBase {
+public final class AndroidDB implements DataBase {
 
     private BDOpenHelper openHelper;
 
