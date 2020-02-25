@@ -215,6 +215,13 @@ public final class Vanyr extends Sprite  {
 
     /**
      *
+     * @return
+     * @since February 25th, 2020
+     */
+    public Body getBody() { return body; }
+
+    /**
+     *
      * @since January 24th, 2020
      */
     private void defineVanyr() {

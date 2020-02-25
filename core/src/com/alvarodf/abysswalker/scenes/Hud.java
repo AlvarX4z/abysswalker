@@ -21,11 +21,11 @@ public final class Hud implements Disposable {
 
     private Viewport viewport; // Viewport to be displayed
 
-    private int hp; // Vanyr's Hit Points (Life)
-    private int damage; // Vanyr's Damage
-    private int armor; // Vanyr's Armor (Defence)
-    private static int exp; // Vanyr's Experience Points (XP)
-    private int level; // Vanyr's current Level
+    public static int hp; // Vanyr's Hit Points (Life)
+    public static int damage; // Vanyr's Damage
+    public static int armor; // Vanyr's Armor (Defence)
+    public static int exp; // Vanyr's Experience Points (XP)
+    public static int level; // Vanyr's current Level
 
     private Label hpLabel; // Hit Points Label
     private Label damageLabel; // Damage Label
@@ -78,12 +78,13 @@ public final class Hud implements Disposable {
      */
     public void update(float dt) {
 
-        if (level == 2) {
+        if (exp == 10 && level == 1) {
 
             hp = 12;
             damage = 7;
             armor = 5;
             exp = 0;
+            level = 2;
 
             hpLabel.setText("HP - " + hp);
             damageLabel.setText("DMG - " + damage);
@@ -91,12 +92,13 @@ public final class Hud implements Disposable {
             expLabel.setText("EXP - " + exp);
             levelLabel.setText("LVL - " + level);
 
-        } else if (level == 3) {
+        } else if (exp == 20  && level == 2) {
 
             hp = 15;
             damage = 10;
             armor = 8;
             exp = 0;
+            level = 3;
 
             hpLabel.setText("HP - " + hp);
             damageLabel.setText("DMG - " + damage);
@@ -104,12 +106,13 @@ public final class Hud implements Disposable {
             expLabel.setText("EXP - " + exp);
             levelLabel.setText("LVL - " + level);
 
-        } else if (level == 4) {
+        } else if (exp == 30  && level == 3) {
 
             hp = 19;
             damage = 14;
             armor = 12;
             exp = 0;
+            level = 4;
 
             hpLabel.setText("HP - " + hp);
             damageLabel.setText("DMG - " + damage);
@@ -117,12 +120,13 @@ public final class Hud implements Disposable {
             expLabel.setText("EXP - " + exp);
             levelLabel.setText("LVL - " + level);
 
-        } else if (level == 5) {
+        } else if (exp == 40  && level == 4) {
 
             hp = 24;
             damage = 19;
             armor = 17;
             exp = 0;
+            level = 5;
 
             hpLabel.setText("HP - " + hp);
             damageLabel.setText("DMG - " + damage);

@@ -24,6 +24,7 @@ public final class Dragon extends Sprite {
     private Animation<TextureRegion> dragonStanding;
 
     private float stateTimer;
+    public int dragonHp = 100;
 
     /**
      *
@@ -59,32 +60,7 @@ public final class Dragon extends Sprite {
     public void update(float dt) {
 
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
-        // setRegion(getFrame(dt));
         setRegion(dragonStanding.getKeyFrame(stateTimer, true));
-
-    }
-
-    /**
-     *
-     * @param dt
-     * @return
-     * @since February 10th, 2020
-     */
-    public TextureRegion getFrame(float dt) {
-
-        TextureRegion region = dragonStanding.getKeyFrame(stateTimer, true);
-
-        if ((body.getLinearVelocity().x < 0) && !region.isFlipX()) {
-
-            region.flip(true, false);
-
-        } else if ((body.getLinearVelocity().x > 0) && region.isFlipX()) {
-
-            region.flip(true, false);
-
-        }
-
-        return region;
 
     }
 
@@ -94,7 +70,7 @@ public final class Dragon extends Sprite {
     protected void defineDragon() {
 
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(250, 150);
+        bodyDef.position.set(200, 50);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
 
         body = world.createBody(bodyDef);
@@ -104,9 +80,18 @@ public final class Dragon extends Sprite {
 
         rectangle.setAsBox(85, 50);
 
+
+
         fixtureDef.shape = rectangle;
         body.createFixture(fixtureDef);
 
     }
+
+    /**
+     *
+     * @return
+     * @since February 25th, 2020
+     */
+    public Body getBody() { return body; }
 
 }

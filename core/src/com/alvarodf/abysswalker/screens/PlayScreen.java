@@ -1,6 +1,7 @@
 package com.alvarodf.abysswalker.screens;
 
 import com.alvarodf.abysswalker.AbysswalkerGame;
+import com.alvarodf.abysswalker.db.DataBase;
 import com.alvarodf.abysswalker.scenes.Hud;
 import com.alvarodf.abysswalker.sprites.Dragon;
 import com.alvarodf.abysswalker.sprites.Vanyr;
@@ -17,6 +18,10 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -44,10 +49,10 @@ public final class PlayScreen implements Screen {
 
     private Music music;
 
-    // ----------------------- BoX2D Variables -----------------------
-
     private World world;
     private Box2DDebugRenderer debugRenderer;
+
+    private DataBase db;
 
     /**
      * PlayScreen's Constructor.
@@ -58,13 +63,13 @@ public final class PlayScreen implements Screen {
 
         this.game = game;
 
-        vanyrAtlas = new TextureAtlas("android/assets/sprites/vanyr.pack");
-        dragonAtlas = new TextureAtlas("android/assets/sprites/dragon.pack");
+        vanyrAtlas = new TextureAtlas("sprites/vanyr.pack");
+        dragonAtlas = new TextureAtlas("sprites/dragon.pack");
         camera = new OrthographicCamera();
-        gamePort = new FitViewport(AbysswalkerGame.VIEWPORT_WIDTH, AbysswalkerGame.VIEWPORT_HEIGHT, camera); //
+        gamePort = new FitViewport(AbysswalkerGame.VIEWPORT_WIDTH, AbysswalkerGame.VIEWPORT_HEIGHT, camera);
         hud = new Hud(game.batch);
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("android/assets/maps/map_forest.tmx"); // Stating map's path
+        map = mapLoader.load("maps/map_forest.tmx"); // Stating map's path
         mapRenderer = new OrthogonalTiledMapRenderer(map);
 
         camera.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); // Sets the camera at the start of the level
@@ -74,12 +79,45 @@ public final class PlayScreen implements Screen {
 
         vanyr = new Vanyr(this);
         dragon = new Dragon(this);
+        dragon.flip(true, false);
 
         music = AbysswalkerGame.manager.get("audio/main_theme.mp3", Music.class);
         music.setLooping(true);
         music.play();
 
         new B2WorldCreator(this);
+
+        world.setContactListener(new ContactListener() {
+
+            @Override
+            public void beginContact(Contact contact) {
+
+                if (contact.getFixtureA().getBody() == vanyr.getBody() && contact.getFixtureB().getBody() == dragon.getBody()) {
+
+                    vanyr.getBody().applyForceToCenter(vanyr.getX() - 20, vanyr.getX() + 20, true);
+                    dragon.body.setLinearVelocity(1000, 300);
+                    dragon.dragonHp -= 10;
+
+                    Hud.addEXP(1);
+
+                    db.saveInfo(Hud.hp, Hud.damage, Hud.armor, Hud.exp, Hud.level);
+
+                    // if (dragon.dragonHp == 0) {  }
+
+                }
+
+            }
+
+            @Override
+            public void endContact(Contact contact) { }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) { }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) { }
+
+        });
 
     }
 

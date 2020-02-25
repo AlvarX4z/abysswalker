@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 /**
  * The game's core class. Here can be found basic parameters for the game and where to create, render and dispose elements.
@@ -33,6 +34,8 @@ public final class AbysswalkerGame extends Game {
 
         manager.load("audio/main_theme.mp3", Music.class);
         // manager.load("String sonido", Sound.class);
+        manager.load("sprites/dragon.pack", TextureAtlas.class);
+        manager.load("sprites/vanyr.pack", TextureAtlas.class);
         manager.finishLoading();
 
         setScreen(new PlayScreen(this));
