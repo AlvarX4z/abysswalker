@@ -80,8 +80,6 @@ public final class Dragon extends Sprite {
 
         rectangle.setAsBox(85, 50);
 
-
-
         fixtureDef.shape = rectangle;
         body.createFixture(fixtureDef);
 

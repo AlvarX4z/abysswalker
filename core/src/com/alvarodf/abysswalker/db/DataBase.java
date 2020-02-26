@@ -5,7 +5,7 @@ package com.alvarodf.abysswalker.db;
  */
 public interface DataBase {
 
-    public int[] loadInfo();
-    public void saveInfo(int hp, int dmg, int arm, int exp, int lvl);
+    int[] loadInfo();
+    void saveInfo(int hp, int dmg, int arm, int exp, int lvl);
 
 }
