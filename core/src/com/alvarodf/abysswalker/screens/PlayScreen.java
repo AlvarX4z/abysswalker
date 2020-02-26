@@ -2,6 +2,7 @@ package com.alvarodf.abysswalker.screens;
 
 import com.alvarodf.abysswalker.AbysswalkerGame;
 import com.alvarodf.abysswalker.db.DataBase;
+import com.alvarodf.abysswalker.input.ControllerInput;
 import com.alvarodf.abysswalker.scenes.Hud;
 import com.alvarodf.abysswalker.sprites.Dragon;
 import com.alvarodf.abysswalker.sprites.Vanyr;
@@ -42,6 +43,7 @@ public final class PlayScreen implements Screen {
     private Hud hud; // The game's HUD
     private Vanyr vanyr; // The player's character
     private Dragon dragon;
+    private ControllerInput input;
 
     private TmxMapLoader mapLoader; // The TiledMap Loader (.tmx)
     private TiledMap map; // The TiledMap itself
@@ -84,6 +86,9 @@ public final class PlayScreen implements Screen {
         music = AbysswalkerGame.manager.get("audio/main_theme.mp3", Music.class);
         music.setLooping(true);
         music.play();
+
+        input = new ControllerInput(vanyr);
+        Gdx.input.setInputProcessor(input);
 
         new B2WorldCreator(this);
 
@@ -139,7 +144,7 @@ public final class PlayScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) { vanyr.body.applyLinearImpulse(new Vector2(100, 0), vanyr.body.getWorldCenter(), true); }
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) { vanyr.body.applyForceToCenter(0, 100000, true); }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) { vanyr.currentState = Vanyr.State.ATTACKING; }
-        if (Gdx.input.isKeyPressed(Input.Keys.R)) { vanyr.currentState = Vanyr.State.DYING; }
+        if (Hud.hp == 0) { vanyr.currentState = Vanyr.State.DYING; }
 
     }
 
