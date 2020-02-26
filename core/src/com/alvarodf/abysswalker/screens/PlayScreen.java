@@ -43,6 +43,7 @@ public final class PlayScreen implements Screen {
     private Hud hud; // The game's HUD
     private Vanyr vanyr; // The player's character
     private Dragon dragon;
+
     private ControllerInput input;
 
     private TmxMapLoader mapLoader; // The TiledMap Loader (.tmx)
@@ -81,7 +82,6 @@ public final class PlayScreen implements Screen {
 
         vanyr = new Vanyr(this);
         dragon = new Dragon(this);
-        dragon.flip(true, false);
 
         music = AbysswalkerGame.manager.get("audio/main_theme.mp3", Music.class);
         music.setLooping(true);

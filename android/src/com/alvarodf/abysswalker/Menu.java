@@ -6,14 +6,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 /**
- * @since February 26th, 2020
+ * Launching Activity for Android. Shows the menu with a background and a 'Play!' button. Extends from AppCompatActivity.
+ * @since February 26th, 2020.
+ * @author Alvaro de Francisco
  */
 public class Menu extends AppCompatActivity {
 
     /**
-     *
-     * @param savedInstanceState
-     * @since February 26th, 2020
+     * Mandatory function that creates the Activity. The ContentView is set to 'activity_menu'.
+     * @param savedInstanceState Not used.
+     * @since February 26th, 2020.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +26,9 @@ public class Menu extends AppCompatActivity {
     }
 
     /**
-     *
-     * @param view
-     * @since February 26th, 2020
+     * Event function activated when the 'Play!' button is touched. Launches the game and the service.
+     * @param view Not used.
+     * @since February 26th, 2020.
      */
     public void play(View view) {
 

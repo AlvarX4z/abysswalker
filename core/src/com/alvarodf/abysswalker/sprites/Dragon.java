@@ -12,9 +12,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
 /**
- *
+ * Represents the enemy Dragon. Extends from the Sprite class (LibGDX).
+ * @since February 25th, 2020.
  * @author Alvaro de Francisco
- * @since February 25th, 2020
  */
 public final class Dragon extends Sprite {
 

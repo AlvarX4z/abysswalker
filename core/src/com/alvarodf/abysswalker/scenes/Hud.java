@@ -14,8 +14,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * Represents the Head-Up Display (HUD) for the game. It holds information such the Labels for Hit Points, Level, etc.
- * @author Alvaro de Francisco
- * @since January 21st, 2020
+ * Implements the Disposable interface (LibGDX).
+ * @since January 21st, 2020.
+ *  @author Alvaro de Francisco
  */
 public final class Hud implements Disposable {
 
@@ -38,9 +39,11 @@ public final class Hud implements Disposable {
     /**
      * HUD's constructor.
      * @param b The SpriteBach where to allocate all the HUD sprites to be rendered.
-     * @since January 21st, 2020
+     * @since January 21st, 2020.
      */
     public Hud(SpriteBatch b) {
+
+        Table table; // Table for organizing the Labels by a stated patron
 
         hp = 10;
         damage = 5;
@@ -51,7 +54,7 @@ public final class Hud implements Disposable {
         viewport = new FitViewport(AbysswalkerGame.VIEWPORT_WIDTH, AbysswalkerGame.VIEWPORT_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, b);
 
-        Table table = new Table(); // Table for organizing the Labels by a stated patron
+        table = new Table();
         table.top();
         table.setFillParent(true);
 
@@ -67,14 +70,14 @@ public final class Hud implements Disposable {
         table.add(expLabel).expandX().padTop(5);
         table.add(levelLabel).expandX().padTop(5);
 
-        stage.addActor(table); // Adding the filled table to the stage
+        stage.addActor(table);
 
     }
 
     /**
-     *
-     * @param dt
-     * @since February 25th, 2020
+     * Function which updates the HUD's values.
+     * @param dt Delta Time.
+     * @since February 25th, 2020.
      */
     public void update(float dt) {
 
@@ -139,9 +142,9 @@ public final class Hud implements Disposable {
     }
 
     /**
-     *
-     * @param value
-     * @since February 25th, 2020
+     * Adds a value to the current experience points.
+     * @param value Value to be added to the current experience points.
+     * @since February 25th, 2020.
      */
     public static void addEXP(int value) {
 
@@ -151,8 +154,8 @@ public final class Hud implements Disposable {
     }
 
     /**
-     *
-     * @since January 21st, 2020
+     * Disposes the Hud's stage for releasing memory.
+     * @since January 21st, 2020.
      */
     @Override
     public void dispose() { stage.dispose(); }
