@@ -1,5 +1,6 @@
 android {
     buildToolsVersion "29.0.2"
+
     compileSdkVersion 29
     sourceSets {
         main {
@@ -29,6 +30,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
 }
 
 
@@ -87,4 +90,8 @@ task run(type: Exec) {
 
     def adb = path + "/platform-tools/adb"
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.alvarodf.abysswalker/com.alvarodf.abysswalker.AndroidLauncher'
+}
+
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
 }
