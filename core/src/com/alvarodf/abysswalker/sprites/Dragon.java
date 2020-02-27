@@ -18,24 +18,25 @@ import com.badlogic.gdx.utils.Array;
  */
 public final class Dragon extends Sprite {
 
-    private World world;
-    public Body body;
+    private World world; // Physics
+    public Body body; // Dragon's body for physics within the world
 
-    private Animation<TextureRegion> dragonStanding;
+    private Animation<TextureRegion> dragonStanding; // Dragon's standing animation. Not working
 
-    private float stateTimer;
-    public int dragonHp = 100;
+    private float stateTimer; // Helper for transiting from one animation frame to other
+    public int dragonHp; // Dragon's HP
 
     /**
-     *
-     * @since January 24th, 2020
-     * @param screen
+     * Dragon's constructor. Must be invoked when creating the PlayScreen.
+     * @param screen PlayScreen.
+     * @since January 24th, 2020.
      */
     public Dragon(PlayScreen screen) {
 
         super(screen.getDragonAtlas().findRegion("dragon"));
         this.world = screen.getWorld();
 
+        dragonHp = 100;
         stateTimer = 0;
 
         Array<TextureRegion> standingFrames = new Array<>();
@@ -53,9 +54,9 @@ public final class Dragon extends Sprite {
     }
 
     /**
-     *
-     * @param dt
-     * @since February 8th, 2020
+     * Updates the dragon's position when it moves.
+     * @param dt Delta Time.
+     * @since February 8th, 2020.
      */
     public void update(float dt) {
 
@@ -65,12 +66,13 @@ public final class Dragon extends Sprite {
     }
 
     /**
-     * @since February 25th, 2020
+     * Dragon's physical definition.
+     * @since February 25th, 2020.
      */
     protected void defineDragon() {
 
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(200, 50);
+        bodyDef.position.set(1300, 50);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
 
         body = world.createBody(bodyDef);
@@ -86,9 +88,9 @@ public final class Dragon extends Sprite {
     }
 
     /**
-     *
-     * @return
-     * @since February 25th, 2020
+     * Getter for the Dragon's body.
+     * @return Dragon's body.
+     * @since February 25th, 2020.
      */
     public Body getBody() { return body; }
 

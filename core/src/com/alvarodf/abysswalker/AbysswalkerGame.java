@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 /**
  * The game's core class. Here can be found basic parameters for the game and where to create, render and dispose elements.
  * Extends from the predefined 'Game' class (LibGDX).
+ * @since January 20th, 2020.
  * @author Alvaro de Francisco
- * @since January 20th, 2020
  */
 public final class AbysswalkerGame extends Game {
 
@@ -24,7 +24,7 @@ public final class AbysswalkerGame extends Game {
 
     /**
      * Mandatory function from LibGDX for creating the basic elements of the game.
-     * @since January 20th, 2020
+     * @since January 20th, 2020.
      */
     @Override
     public void create() {
@@ -44,14 +44,14 @@ public final class AbysswalkerGame extends Game {
 
     /**
      * Mandatory function from LibGDX for rendering the basic elements of the game.
-     * @since January 20th, 2020
+     * @since January 20th, 2020.
      */
     @Override
     public void render() { super.render(); }
 
     /**
      * Mandatory function from LibGDX for disposing the basic elements of the game.
-     * @since January 20th, 2020
+     * @since January 20th, 2020.
      */
     @Override
     public void dispose() {

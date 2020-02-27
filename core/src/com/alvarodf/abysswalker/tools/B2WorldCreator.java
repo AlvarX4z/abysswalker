@@ -12,10 +12,17 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
- * @since February 8th, 2020
+ * Helps creating the map and the objects with collisions within it.
+ * @since February 8th, 2020.
+ * @author Alvaro de Francisco
  */
 public final class B2WorldCreator {
 
+    /**
+     * Constructor called in PlayScreen.
+     * @param screen PlayScreen.
+     * @since February 8th, 2020.
+     */
     public B2WorldCreator(PlayScreen screen) {
 
         World world = screen.getWorld();
