@@ -24,6 +24,8 @@ public final class Vanyr extends Sprite  {
     public State currentState; // Represents Vanyr's current state
     private State previousState; // Represents Vanyr's previous state
 
+
+
     private World world; // Physics
     public Body body; // Vanyr's body for physics within the world
 

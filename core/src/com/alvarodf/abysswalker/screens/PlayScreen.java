@@ -25,6 +25,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.ArrayList;
+
 /**
  * Represents the game's screen which displays the game and all the visual elements. Implements the 'Screen' interface (LibGDX).
  * @since January 21st, 2020.
@@ -41,6 +43,7 @@ public final class PlayScreen implements Screen {
     private Hud hud; // The game's HUD
     private Vanyr vanyr; // The player's character
     private Dragon dragon; // The enemy Dragon
+    ArrayList<Dragon> dragons;
 
     private TmxMapLoader mapLoader; // The TiledMap Loader (.tmx)
     private TiledMap map; // The TiledMap itself
@@ -78,6 +81,8 @@ public final class PlayScreen implements Screen {
 
         vanyr = new Vanyr(this);
         dragon = new Dragon(this);
+        dragons = new ArrayList<Dragon>();
+        dragons.add(dragon);
 
         music = AbysswalkerGame.manager.get("audio/main_theme.mp3", Music.class);
         music.setLooping(true);
@@ -95,19 +100,26 @@ public final class PlayScreen implements Screen {
             @Override
             public void beginContact(Contact contact) {
 
+                ArrayList<Dragon> dragonsToRemove = new ArrayList<Dragon>();
+
                 if (contact.getFixtureA().getBody() == vanyr.getBody() && contact.getFixtureB().getBody() == dragon.getBody()) { // If Vanyr touches the Dragon
 
                     vanyr.getBody().applyForceToCenter(vanyr.getX() - 20, vanyr.getX() + 20, true);
                     dragon.body.setLinearVelocity(1000, 300);
                     dragon.dragonHp -= 10;
+                    dragonsToRemove.add(dragon);
 
                     Hud.addEXP(10);
 
-                    db.saveInfo(Hud.hp, Hud.damage, Hud.armor, Hud.exp, Hud.level);
+                   // db.saveInfo(Hud.hp, Hud.damage, Hud.armor, Hud.exp, Hud.level);
 
                     // if (dragon.dragonHp == 0) {  }
 
                 }
+
+                dragons.removeAll(dragonsToRemove);
+
+
 
             }
 
@@ -200,7 +212,9 @@ public final class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
         vanyr.draw(game.batch);
-        dragon.draw(game.batch);
+        for (Dragon dragon : dragons) {
+            dragon.draw(game.batch);
+        }
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
