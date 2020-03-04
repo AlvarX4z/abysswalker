@@ -43,7 +43,7 @@ public final class PlayScreen implements Screen {
     private Hud hud; // The game's HUD
     private Vanyr vanyr; // The player's character
     private Dragon dragon; // The enemy Dragon
-    ArrayList<Dragon> dragons;
+    private ArrayList<Dragon> dragons; // ArrayList containing Dragon variables
 
     private TmxMapLoader mapLoader; // The TiledMap Loader (.tmx)
     private TiledMap map; // The TiledMap itself
@@ -111,15 +111,11 @@ public final class PlayScreen implements Screen {
 
                     Hud.addEXP(10);
 
-                   // db.saveInfo(Hud.hp, Hud.damage, Hud.armor, Hud.exp, Hud.level);
+                    // db.saveInfo(Hud.hp, Hud.damage, Hud.armor, Hud.exp, Hud.level);
 
-                    // if (dragon.dragonHp == 0) {  }
+                    if (dragon.dragonHp == 0) { dragons.removeAll(dragonsToRemove); }
 
                 }
-
-                dragons.removeAll(dragonsToRemove);
-
-
 
             }
 
@@ -167,9 +163,9 @@ public final class PlayScreen implements Screen {
      */
     private void handleInput(float dt) {
 
-        if (isLeft()) { vanyr.body.applyLinearImpulse(new Vector2(-100, 0), vanyr.body.getWorldCenter(), true); } // Checks left movement
-        if (isRight()) { vanyr.body.applyLinearImpulse(new Vector2(100, 0), vanyr.body.getWorldCenter(), true); } // Checks right movement
-        if (isUp()) { vanyr.body.applyForceToCenter(0, 100000, true); } // Checks up movement
+        if (isLeft() && vanyr.getX() >= 200) { vanyr.body.applyLinearImpulse(new Vector2(-100, 0), vanyr.body.getWorldCenter(), true); } // Checks left movement
+        if (isRight() && vanyr.getX() <= 2800) { vanyr.body.applyLinearImpulse(new Vector2(100, 0), vanyr.body.getWorldCenter(), true); } // Checks right movement
+        if (isUp() && vanyr.getY() <= 150) { vanyr.body.applyForceToCenter(0, 100000, true); } // Checks up movement
         if (isAttack()) { vanyr.currentState = Vanyr.State.ATTACKING; } // Checks attack movement
         if (Hud.hp == 0) { vanyr.currentState = Vanyr.State.DYING; } // Checks dying moment
 
@@ -212,9 +208,9 @@ public final class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
         vanyr.draw(game.batch);
-        for (Dragon dragon : dragons) {
-            dragon.draw(game.batch);
-        }
+
+        for (Dragon dragon : dragons) { dragon.draw(game.batch); }
+
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
