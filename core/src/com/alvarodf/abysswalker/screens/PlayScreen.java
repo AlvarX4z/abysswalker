@@ -54,8 +54,6 @@ public final class PlayScreen implements Screen {
     private World world; // World's physics
     // private Box2DDebugRenderer debugRenderer; // Debugging tool
 
-    private DataBase db; // Game's DataBase Interface
-
     /**
      * PlayScreen's Constructor.
      * @param game The game. You can use 'this' when invoking this at 'AbysswalkerGame' class.
@@ -111,7 +109,7 @@ public final class PlayScreen implements Screen {
 
                     Hud.addEXP(10);
 
-                    // db.saveInfo(Hud.hp, Hud.damage, Hud.armor, Hud.exp, Hud.level);
+                    AbysswalkerGame.db.saveInfo(Hud.level);
 
                     if (dragon.dragonHp == 0) { dragons.removeAll(dragonsToRemove); }
 

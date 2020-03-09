@@ -1,5 +1,6 @@
 package com.alvarodf.abysswalker;
 
+import com.alvarodf.abysswalker.db.DataBase;
 import com.alvarodf.abysswalker.screens.PlayScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
@@ -21,6 +22,15 @@ public final class AbysswalkerGame extends Game {
     public SpriteBatch batch; // Allocated Sprites to be created and rendered
 
     public static AssetManager manager; // Helps managing game's assets
+    public static DataBase db;
+
+
+    /**
+     * Empty constructor for creating a SQLite Database for Android.
+     * @param db The DataBase class which implements the interface 'DataBase'.
+     * @since March 9th, 2020.
+     */
+    public AbysswalkerGame(DataBase db) { this.db = db; }
 
     /**
      * Mandatory function from LibGDX for creating the basic elements of the game.

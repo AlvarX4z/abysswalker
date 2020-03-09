@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.alvarodf.abysswalker.db.AndroidDB;
 import com.alvarodf.abysswalker.services.ActivatedService;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
@@ -26,7 +27,7 @@ public final class AndroidLauncher extends AndroidApplication {
 
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new AbysswalkerGame(), config);
+		initialize(new AbysswalkerGame(new AndroidDB(this)), config);
 		startService(new Intent(this, ActivatedService.class));
 
 	}

@@ -26,7 +26,7 @@ public final class BDOpenHelper extends SQLiteOpenHelper {
      * @since February 25th, 2020.
      */
     @Override
-    public void onCreate(SQLiteDatabase db) { db.execSQL("create table vanyr(hp int(2), dmg int(2), arm int(2), exp int(4), lvl int(1));"); }
+    public void onCreate(SQLiteDatabase db) { db.execSQL("create table vanyrLevel(lvl int(1));"); }
 
     /**
      * Mandatory function that updates the SQLite DataBase when the stated version is changed. This should not be called in this game.

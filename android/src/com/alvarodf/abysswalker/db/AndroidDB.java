@@ -23,87 +23,44 @@ public final class AndroidDB implements DataBase {
     public AndroidDB(Context context) { openHelper = new BDOpenHelper(context, 1); }
 
     /**
-     * Loads the user's statistics for its Vanyr character: Current health points, damage, armor, experience points and level.
-     * @return An int array which holds the values in the specified order from above.
+     * Loads the user's statistics for its Vanyr's level character:.
+     * @return The player's level.
      * @since February 25th, 2020.
      */
     @Override
-    public int[] loadInfo() {
+    public int loadInfo() {
 
         SQLiteDatabase db;
         Cursor cursor;
-        int[] datos;
 
-        datos = new int[5];
         db = openHelper.getWritableDatabase();
-        cursor = db.query("vanyr", null, null, null, null, null, null);
+        cursor = db.query("vanyrLevel", null,null,null, null,null,null);
 
-        if (cursor.moveToFirst()) { // Retrieves the data.
-
-            datos[0] = cursor.getInt(cursor.getColumnIndex("hp"));
-            datos[1] = cursor.getInt(cursor.getColumnIndex("dmg"));
-            datos[2] = cursor.getInt(cursor.getColumnIndex("arm"));
-            datos[3] = cursor.getInt(cursor.getColumnIndex("exp"));
-            datos[4] = cursor.getInt(cursor.getColumnIndex("lvl"));
-            return datos;
-
-        } else { // If data isn't retrieved, returns a default set of values as a new game.
-
-            datos[0] = 10;
-            datos[1] = 5;
-            datos[2] = 3;
-            datos[3] = 0;
-            datos[4] = 1;
-            return datos;
-
-        }
+        if (cursor.moveToFirst()) { return cursor.getInt(cursor.getColumnIndex("level")); }
+        else { return 1; }
 
     }
 
     /**
      * Saves the user's statistics for its Vanyr character: Current health points, damage, armor, experience points and level.
-     * @param hp The current health points.
-     * @param dmg The current damage points.
-     * @param arm The current armor points.
-     * @param exp The current experience points.
      * @param lvl The current level points.
      * @since February 25th, 2020.
      */
     @Override
-    public void saveInfo(int hp, int dmg, int arm, int exp, int lvl) {
+    public void saveInfo(int lvl) {
 
         SQLiteDatabase db;
         Cursor cursor;
-        ContentValues contentVHP;
-        ContentValues contentVDMG;
-        ContentValues contentVARM;
-        ContentValues contentVEXP;
         ContentValues contentVLVL;
 
         db = openHelper.getWritableDatabase();
-        cursor = db.query("vanyr", null, null, null, null, null, null);
-
-        contentVHP = new ContentValues();
-        contentVDMG = new ContentValues();
-        contentVARM = new ContentValues();
-        contentVEXP = new ContentValues();
+        cursor = db.query("vanyrLevel", null,null,null, null,null,null);
         contentVLVL = new ContentValues();
 
-        contentVHP.put("hp", hp);
-        contentVDMG.put("dmg", dmg);
-        contentVARM.put("arm", arm);
-        contentVEXP.put("exp", exp);
-        contentVLVL.put("lvl", lvl);
+        contentVLVL.put("level", lvl);
 
-        if (cursor.moveToFirst()) {
-
-            db.update("vanyr", contentVHP, null, null);
-            db.update("vanyr", contentVDMG, null, null);
-            db.update("vanyr", contentVARM, null, null);
-            db.update("vanyr", contentVEXP, null, null);
-            db.update("vanyr", contentVLVL, null, null);
-
-        }
+        if (cursor.moveToFirst()) { db.update("vanyrLevel", contentVLVL, null, null); }
+        else { db.insert("vanyrLevel", null, contentVLVL); }
 
         cursor.close();
         db.close();
